@@ -1,0 +1,155 @@
+{% extends "login\base.html" %}
+
+
+{% block content %}
+
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>Mouse List</h1>
+</header>
+<div class="container">
+    <div class="row mt-5">
+        
+        
+    </div>
+    <div class="row mt-3">
+        <div class="col-3">
+            <h2>Type:</h2>
+        </div>
+        <div class="col-6">
+            <form action="{% url 'login:items' %}", method="get" id="filter_type">
+                <div class="input-group mb-3">
+                    <select form="filter_type" name="type_choice" class="custom-select" id="inputGroupSelect03">
+                        {% for choices in choices_type %}
+                        <option value="{{ choices.name }}">{{ choices.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="input-group-prepend">
+                      <input class="btn btn-outline-secondary" type="button" onclick="requestData('type')" value="Filter">
+                    </div>
+                  </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <h2>Condition:</h2>
+            </div>
+            <div class="col-6">
+                <form action="{% url 'login:items' %}", method="get" id="filter_condition">
+                    <div class="input-group mb-3">
+                        <select form="filter_condition" name="condition_choice" class="custom-select" >
+                            {% for choices in choices_condition %}
+                            <option value="{{ choices.name }}">{{ choices.name }}</option>
+                            {% endfor %}  
+                        </select>
+                        <div class="input-group-prepend">
+                          <input class="btn btn-outline-secondary" type="button" onclick="requestData('condition')" value="Filter">
+                        </div>
+                      </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="container mt-5" id="main">
+    <div class="row mt-3">
+        <div class="col-8">
+            <h2>List of your Items</h2>
+        </div>
+    </div>
+    <div class="container mt-3" id="list_container">
+
+    </div>
+    {% for object in object_list %}
+    <div class="row">
+        <div class="col-6">
+            <div class="row border">
+                <div class="col-8">
+                    <a href="{% url 'login:item_detail' object.id %}">
+                        <h3>{{ object.name }}</h3>
+                    </a>
+                </div>
+            </div>            
+        </div>        
+    </div>
+    {% empty %}
+    {% endfor %}
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Execute the requestData function once the document is ready
+        console.log('fucn called')
+        requestData('');
+    });
+    function requestData(category) {
+        let filter_by = '';
+        // Your server endpoint URL
+        var url = "{% url 'login:item_list_json' %}";
+
+        var xhr = new XMLHttpRequest();
+        
+        if(category === "type"){
+            filter_by = document.forms["filter_type"]["type_choice"].value
+            xhr.open('GET', url + '?category=' + encodeURIComponent(category) + '&type_choice=' + encodeURIComponent(filter_by), true);
+        } else if(category === "condition"){
+            filter_by = document.forms["filter_condition"]["condition_choice"].value
+            xhr.open('GET', url + '?category=' + encodeURIComponent(category) + '&condition_choice=' + encodeURIComponent(filter_by), true);
+        } else {
+            xhr.open('GET', url + '?category=' + encodeURIComponent('all') , true);
+            console.log('empty')
+        }
+
+        
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var data = JSON.parse(xhr.responseText);
+                console.log(data)
+                displayData(data);
+            } else if (xhr.readyState == 4 && xhr.status != 200) {
+                console.error('Error fetching data:', xhr.status);
+            }
+        };
+        xhr.send();
+    }
+
+    function displayData(data) {
+        console.log('displayed')
+        var resultDiv = document.getElementById('list_container');
+        resultDiv.innerHTML = '';
+
+        let items = data.items;
+
+        console.log('excuted',items);
+        if (items && items.length > 0) {
+            console.log('excuted');
+            items.forEach(function (item) {
+                let item_name = item.name;
+                let item_id = item.id;
+                console.log(item_name, item_id);
+                resultDiv.innerHTML += `
+                
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row border">
+                            <div class="col-8">
+                                <a href="items/${item_id}/details">
+                                    <h3>${item_name}</h3>
+                                </a>
+                            </div>
+                        </div>            
+                    </div>        
+                </div>
+
+                `
+            });
+        } else {
+            resultDiv.textContent = 'No data available.';
+        }
+    }
+</script>
+
+
+{% endblock %}

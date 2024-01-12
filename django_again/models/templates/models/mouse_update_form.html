@@ -1,0 +1,16 @@
+{% extends 'models\base.html' %}
+
+{% block content %}
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>Update</h1>
+</header>
+
+<main class="container mt-5">
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update">
+    </form>
+</main>
+
+{% endblock %}

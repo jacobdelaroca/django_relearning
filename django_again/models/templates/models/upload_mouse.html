@@ -1,0 +1,36 @@
+{% extends 'models\base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-3"><h3>Please Fill in mouse details</h3></div>
+    <form class="mt-7"  method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="brand" class="form-label">Brand</label>
+          <input type="text" class="form-control" id="mouse-brand" name="brand">
+        </div>
+
+        <div class="mb-3">
+          <label for="category" class="form-label">Category</label>
+          <input type="text" class="form-control" id="mouse-category" name="category">
+        </div>
+        
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="mouse-name" name="name">
+        </div>
+
+        <div class="mb-3">
+          <label for="price" class="form-label">Price</label>
+          <input type="number" class="form-control" id="mouse-price" name="price">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+        {% if created %}
+        <div class="row">Mouse succesfully created</div>
+        {% endif %}
+      </form>
+</div>
+
+{% endblock %}

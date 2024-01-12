@@ -1,0 +1,48 @@
+{% extends 'login\base.html' %}
+
+{% block content %}
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>{{ object.name }}</h1>
+</header>
+
+<main class="container mt-5">
+    <div class="row">
+        <div class="col-2">
+            <a href="{{ back }}">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <button class="btn btn-outline-secondary" type="button">Back</button>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-5 border">
+            <h3>Name: {{ object.name }}</h3>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-5 border">
+            <h3>Quantity: {{ object.quantity }}</h3>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-5 border">
+            <h3>Type: {{ object.item_type }}</h3>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-5 border">
+            <h3>Condition: {{ object.condition }}</h3>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-5 border">
+            <h3>Notes: {{ object.notes }}</h3>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

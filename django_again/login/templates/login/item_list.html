@@ -1,0 +1,88 @@
+{% extends "login\base.html" %}
+
+
+{% block content %}
+
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>Mouse List</h1>
+</header>
+<div class="container">
+    <div class="row mt-5">
+        
+        
+    </div>
+    <div class="row mt-3">
+        <div class="col-3">
+            <h2>Type:</h2>
+        </div>
+        <div class="col-6">
+            <form action="{% url 'login:items' %}", method="get" id="filter_type">
+                <div class="input-group mb-3">
+                    <select form="filter_type" name="type_choice" class="custom-select" id="inputGroupSelect03">
+                        {% for choices in choices_type %}
+                        <option value="{{ choices.name }}">{{ choices.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="input-group-prepend">
+                      <input class="btn btn-outline-secondary" type="submit" value="Filter">
+                    </div>
+                    <input type="hidden" name="category", value="type">
+                  </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <h2>Condition:</h2>
+            </div>
+            <div class="col-6">
+                <form action="{% url 'login:items' %}", method="get" id="filter_condition">
+                    <div class="input-group mb-3">
+                        <select form="filter_condition" name="condition_choice" class="custom-select" >
+                            {% for choices in choices_condition %}
+                            <option value="{{ choices.name }}">{{ choices.name }}</option>
+                            {% endfor %}  
+                        </select>
+                        <div class="input-group-prepend">
+                          <input class="btn btn-outline-secondary" type="submit" value="Filter">
+                        </div>
+                        <input type="hidden" name="category", value="condition">
+                      </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="container mt-5">
+    <div class="row mt-3">
+        <div class="col-8">
+            <h2>List of your Items</h2>
+        </div>
+    </div>
+    {% for object in object_list %}
+    <div class="row">
+        <div class="col-6">
+            <div class="row border">
+                <div class="col-8">
+                    <a href="{% url 'login:item_detail' object.id %}">
+                        <h3>{{ object.name }}</h3>
+                    </a>
+                </div>
+                <!-- <div class="col-2">
+                    <a href="{% url 'models:mouse_delete' object.id%}">Delete</a>
+                </div>
+                <div class="col-2">
+                    <a href="{% url 'models:mouse_update' object.id%}">Update</a>
+                </div> -->
+            </div>
+            
+        </div>
+        
+    </div>
+    {% empty %}
+    {% endfor %}
+</main>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Static Site</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <div class="container-fluid bg-light">
+        <div class="row">
+            <div class="col" sm-2><a href="{% url 'static:home' %}">Home</a></div>
+            <div class="col" lg-2>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col" sm-1 float-end text-end><a href="{% url 'static:products' %}">Products</a></div>
+                        <div class="col" sm-1 float-end text-end><a href="{% url 'static:services' %}">Services</a></div>
+                        <div class="col" sm-1 float-end text-end><a href="{% url 'static:contact' %}">Contact Us</a></div>
+                        <div class="col" sm-1 float-end text-end><a href="{% url 'static:about' %}">About Us</a></div>
+                        <div class="col" sm-1 float-end text-end><a href="{% url 'models:home' %}">Mouse</a></div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+    {% block content %}
+    {% endblock %}
+    <footer class="bg-secondary text-white text-left py-3 mt-auto p-3">
+        <h6>Copyright 2024</h4>
+    </footer>
+
+  <!-- Bootstrap JS (optional, for some functionalities) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

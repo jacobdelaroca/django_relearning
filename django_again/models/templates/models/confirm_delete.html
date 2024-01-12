@@ -1,0 +1,21 @@
+{% extends 'models\base.html' %}
+
+{% block content %}
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>Delete {{ object.name }}?</h1>
+</header>
+
+<main class="container mt-5">
+    <form method="post">{% csrf_token %}
+	
+
+
+
+        <p>Are you sure you want to delete "{{ object.name }}"?</p>
+
+            <input type="submit" value="Confirm">
+        </form>        
+</main>
+
+{% endblock %}

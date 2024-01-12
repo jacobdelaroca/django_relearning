@@ -1,0 +1,13 @@
+{% extends 'models\base.html' %}
+
+{% block content %}
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>Succesfully deleted</h1>
+</header>
+
+<main class="container mt-5">  
+    <div class="row"><a href="{% url 'models:mouse_list' %}"><h3>Return to List</h3></a></div>
+</main>
+
+{% endblock %}
