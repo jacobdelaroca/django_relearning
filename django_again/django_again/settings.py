@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "static",
     "models",
-    "login"
+    "login",
+    "js_practice"
 ]
 
 MIDDLEWARE = [

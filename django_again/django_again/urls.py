@@ -25,4 +25,5 @@ urlpatterns = [
     path('login/', include("login.urls")),
     # add this to add the login urls
     path('accounts/', include("django.contrib.auth.urls")),
+    path('js/', include("js_practice.urls")),
 ]

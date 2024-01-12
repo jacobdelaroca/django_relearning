@@ -1,0 +1,26 @@
+
+{% extends "js_practice\base.html" %}
+
+{% block content %}
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>Tic Tac Toe</h1>
+</header>
+
+<main class="container mt-5">
+    <div class="row">
+        <div class="col-3">
+            <div class="container" id="sub-container">
+                
+            </div>
+        </div>
+        <div class="col-9 ">
+            <div class="container border" id="main-container" style="height: 300px; width: 300px;">
+
+            </div>
+        </div>
+    </div>
+</main>
+{% load static %}
+  <script type="text/javascript" src="{% static 'js_practice/grid.js' %}" defer></script>
+{% endblock %}
