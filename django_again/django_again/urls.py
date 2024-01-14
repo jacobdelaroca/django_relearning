@@ -26,4 +26,5 @@ urlpatterns = [
     # add this to add the login urls
     path('accounts/', include("django.contrib.auth.urls")),
     path('js/', include("js_practice.urls")),
+    path('chat/', include("chat.urls")),
 ]
