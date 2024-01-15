@@ -1,0 +1,39 @@
+{% extends "tictactoe\base.html" %}
+
+{% block content %}
+
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>Tic Tac Toe Multiplayer Game</h1>
+</header>
+
+<main class="container mt-5">
+    <div class="row mt-3">
+        <div class="col-8">
+            <h2>Enter a game name to join someones game</h2></div>
+        </div>
+    <div class="row mt-2">
+    <div class="row mt-2 ">
+        <div class="container">
+            <form action="#" method="post">
+                {% csrf_token %}
+                <div class="row mt-4">
+                    <div class="form-group">
+                        <label for="game-name-input">Game Name</label>
+                        <input type="text" class="form-control" id="game-name-input" aria-describedby="gameName" placeholder="Enter game name" name="game_name">
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col"></div>
+                    <div class="col">
+                        <div class="row">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

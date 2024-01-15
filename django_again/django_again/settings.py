@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "login",
     "js_practice",
     "chat",
+    "tictactoe"
 ]
 
 MIDDLEWARE = [

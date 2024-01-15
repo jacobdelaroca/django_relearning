@@ -27,4 +27,5 @@ urlpatterns = [
     path('accounts/', include("django.contrib.auth.urls")),
     path('js/', include("js_practice.urls")),
     path('chat/', include("chat.urls")),
+    path('tictactoe/', include("tictactoe.urls")),
 ]

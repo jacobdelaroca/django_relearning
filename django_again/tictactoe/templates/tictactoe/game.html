@@ -1,0 +1,35 @@
+{% extends "tictactoe\base.html" %}
+
+{% block content %}
+
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>Tic Tac Toe Multiplayer Game</h1>
+</header>
+
+<main class="container mt-5">
+    <div class="row mt-3">
+        <div class="col-8">
+            <h2>Playing game: {{ game_name }}</h2>
+        </div>
+    </div>
+    <main class="container mt-5">
+        <div class="row">
+            <div class="col-3">
+                <div class="container" id="sub-container">
+                    
+                </div>
+            </div>
+            <div class="col-9 ">
+                <div class="container border" id="main-container" style="height: 300px; width: 300px;">
+    
+                </div>
+            </div>
+        </div>
+    </main>
+    {% load static %}
+    <script type="text/javascript" src="{% static 'tictactoe/grid.js' %}" defer></script>
+</main>
+{{ game_name|json_script:"game-name" }}
+
+{% endblock %}

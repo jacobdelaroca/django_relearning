@@ -1,0 +1,46 @@
+{% extends "tictactoe\base.html" %}
+
+{% block content %}
+
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>Tic Tac Toe Multiplayer Game</h1>
+</header>
+
+<main class="container mt-5">
+    <div class="row mt-3">
+        <div class="col-8">
+            <h2>This is a sample Portfolio website for practising Websockets and channel layers</h2></div>
+        </div>
+    <div class="row mt-2"><article>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, voluptatum accusantium iusto eligendi qui sunt quo consequuntur maiores hic? Enim aliquid ullam aspernatur eligendi non repudiandae quas possimus cum deleniti.    
+    </article></div>
+    <div class="row mt-2 ">
+        <div class="container">
+            <form action="{% url 'tictactoe:create_game' %}" method="post">
+                <div class="row mt-5">
+                    <div class="col"></div>
+                    <div class="col">
+                        <div class="row">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Create Game</button>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+            <div class="row mt-5">
+                <div class="col"></div>
+                <div class="col">
+                    <div class="row">
+                        <button class="btn btn-primary" onclick="javascript:window.location.href='{% url "tictactoe:join_game" %}'">Join Game</button>
+                    </div>
+                    <!-- <a href="{% url 'tictactoe:join_game' %}">
+                    </a> -->
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
