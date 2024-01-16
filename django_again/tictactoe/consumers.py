@@ -4,12 +4,19 @@ from .models import Game
 import json
 
 class GameConsumer(AsyncWebsocketConsumer):
+    player_symbol = None
     async def connect(self):
         user = self.scope['user']
         self.game_name = self.scope['url_route']['kwargs']['game_name']
         self.game_group_name = f'game_{self.game_name}'
-        succesfully_joined, self.player_symbol, board = await self.join_game(user, self.game_name)
+        succesfully_joined, player_symbol, board = await self.join_game(user, self.game_name)
+        if self.player_symbol == None:
+            self.player_symbol = player_symbol
+        if succesfully_joined is None:
+            self.close()
+            return
         if succesfully_joined:
+            # accespt the connection then initiallzie the client board
             await self.accept()
             await self.send(text_data=json.dumps({
                 'type': 'initialize',
@@ -17,25 +24,22 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'board': board['board'],
                 'turn': board['turn']
             }))
+            # update all the channels in the group about the player joining
             win = self.check_win(board['board'])
             turn = board['turn']
             await self.channel_layer.group_send(
             self.game_group_name, {
-                'type': 'board_update',
-                'board': board['board'],
-                'winner': win,
-                'turn': turn,
-            }
-        )
+                    'type': 'board_update',
+                    'board': board['board'],
+                    'winner': win,
+                    'turn': turn,
+                }
+            )
+            # add the channel to the group
             await self.channel_layer.group_add(self.game_group_name, self.channel_name)
         else:
             await self.close()
-        # clears board when reconnect or connect
-        # remove later testing only
-        # game = await self.get_game(self.game_name)
-        # game.board['board'] = [[' ', ' ', ' '],[' ', ' ', ' '],[' ', ' ', ' ']]
-        # await self.save_game(game)
-    
+
     async def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
         move = data['move']
@@ -43,19 +47,19 @@ class GameConsumer(AsyncWebsocketConsumer):
         board = game.board['board']
         turn = game.board['turn']
         valid = self.validate_move(move, board, turn)
-        win = None
+        win = ' '
+
         if valid:
             x, y = move
             board[x][y] = self.player_symbol
             game.board['board'] = board
+            game = await self.change_turn(game)
             game = await self.save_game(game)
-            print(game.board)
             win = self.check_win(board)
             turn = game.board['turn']
                 
         else:
             print('move not valid, handle later')
-        print(win)
 
         await self.channel_layer.group_send(
             self.game_group_name, {
@@ -78,7 +82,14 @@ class GameConsumer(AsyncWebsocketConsumer):
         
 
     async def disconnect(self, code):
-        pass
+        if code == 1006:
+            return
+        await self.handle_disconnect_db()
+    
+    @database_sync_to_async
+    def handle_disconnect_db(self):
+        Game.objects.disconnect(self.scope['user'], self.game_name)
+
 
     def validate_move(self, move, board, turn):
         x,y = move
@@ -105,11 +116,14 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_game(self, game):
+        game.save()
+        return game
+    @database_sync_to_async
+    def change_turn(self, game):
         turn = 'x' if game.board['turn'] == 'o' else 'o'
         game.board['turn'] = turn
         game.save()
         return game
-
     @database_sync_to_async
     def join_game(self, user=None, game_name=None):
         return  Game.objects.join_game(user, game_name)

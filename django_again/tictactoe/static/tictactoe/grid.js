@@ -102,11 +102,22 @@ const gameName = JSON.parse(document.getElementById('game-name').textContent);
                 playerImage = o;
             }
             subCont.appendChild(playerImage.cloneNode(true));
+        } else {
+            if(data['winner'] == 'o'){
+                alert(`o wins`)
+            }
+            if(data['winner'] == 'x'){
+                alert(`x wins`)
+            }
+            console.log(data['winner']);
         }
+        // console.log("winner: ", data['winner']);
         turn = data['turn'];
         board = data['board'];
         console.log(board);
         updateBoard(board);
+        document.querySelector('#symbol-turn').innerHTML = turn
+
 
         // document.querySelector('#chat-log').value += (data.message + '\n');
     };

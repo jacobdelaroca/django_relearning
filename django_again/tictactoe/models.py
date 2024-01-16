@@ -22,28 +22,43 @@ class GameManager(models.Manager):
                     ],
                     'turn': 'x'
                     }
-                game.player1 = user
-                game.player2 = user
+                game.player1 = None
+                game.player2 = None
                 game.save()
             
             return game
     
     def join_game(self, user, game_name):
-        game = self.model.objects.get(game_name=game_name)
+        try:
+            game = self.model.objects.get(game_name=game_name)
+        except self.model.DoesNotExist:
+            return None, None, None
         board = game.board
-        if game.player1 == user:
+        print(user, game.player1, game.player2)
+        if game.player1 == None or game.player1 == user:
+            game.player1 = user
+            game.player2 = None
+            game.save()
+            print(game.player1, game.player2)
             return True, 'x', board
-        elif game.player2 == user:
-            return True, 'o', board
-        # if player 1 and 2 are the same, that means there are no player 2 yet, so set player to to user
-        elif game.player1 == game.player2:
+        elif game.player2 == None or game.player2 == user:
             game.player2 = user
             game.save()
             return True, 'o', board
-        # if use is neither player 1 or 2, reject
         else:
             return False, ' ', board
-
+    
+    def disconnect(self, user, game_name):
+        game = Game.objects.get(game_name=game_name)
+        if game.player1 == user:
+            game.player1 = None
+            game.save()
+        elif game.player2 == user:
+            game.player2 = None
+            game.save()
+        if game.player1 == game.player2 == None:
+            print(game_name, 'deleted')
+            game.delete()
 
         
 

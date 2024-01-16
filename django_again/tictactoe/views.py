@@ -3,6 +3,7 @@ from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.crypto import get_random_string
 from . import models
+from django.http import Http404
 # Create your views here.
 
 class JoinGame(LoginRequiredMixin, View):
@@ -25,6 +26,9 @@ class CreateGame(LoginRequiredMixin, View):
         print(game.game_name)
         return redirect('tictactoe:game', game_name=game.game_name)
     
-class Game(View):
+class Game(LoginRequiredMixin, View):
     def get(self, request, game_name):
+        game = models.Game.objects.filter(game_name=game_name)
+        if len(game) == 0:
+            raise Http404
         return render(request, 'tictactoe/game.html', {'game_name':game_name})
